@@ -11,6 +11,7 @@
     <PackageLicenseExpression>MIT License</PackageLicenseExpression>
     <PackageIcon>Garmin.ico</PackageIcon>
     <PackageIconUrl />
+    <ApplicationIcon>assets\Garmin.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

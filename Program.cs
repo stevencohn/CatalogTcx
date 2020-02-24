@@ -30,38 +30,7 @@ namespace CatalogTcx
 			Console.WriteLine("... found: " + count.ToString());
 
 			// determine if a Garmin USB is mounted
-			var disks = new UsbFactory().GetAvailableDisks();
-			if ((disks != null) && (disks.Count > 0))
-			{
-				var disk = disks.FirstOrDefault(
-					e => e.Model.StartsWith("Garmin", StringComparison.InvariantCulture));
-
-				if (disk != null)
-				{
-					// scan for tcx files on the Garmin, disk.Name would be simply like "G:"
-
-					// Edge 820 stores fit files in Garmin\Activities
-					var sourcePath = disk.Name + @"\Garmin\Activities";
-					if (!Directory.Exists(sourcePath))
-					{
-						// Edge 705 stores tcx files in Garmin\History
-						sourcePath = disk.Name + @"\Garmin\History";
-					}
-
-					if (Directory.Exists(sourcePath))
-					{
-						Console.WriteLine();
-						Console.WriteLine("... scanning files in " + sourcePath);
-						count = ScanFiles(sourcePath, path, false);
-						Console.WriteLine("... found: " + count);
-					}
-				}
-			}
-			else
-			{
-				Console.WriteLine();
-				Console.WriteLine("... Garmin not found");
-			}
+			count += ScanGarmin(path);
 
 			// scan for Zwift files
 			Console.WriteLine();
@@ -92,7 +61,19 @@ namespace CatalogTcx
 
 				// open each TCX file and look for its activity start time
 
-				var root = XElement.Load(filnam);
+				XElement root = null;
+
+				try
+				{
+					// some activities (e.g. heart rate only) show up as HTML instead of XML
+					root = XElement.Load(filnam);
+				}
+				catch
+				{
+					Console.WriteLine($"    skipping {filnam}");
+					continue;
+				}
+
 				var ns = root.GetDefaultNamespace();
 
 				var lap = (from e in root
@@ -146,6 +127,58 @@ namespace CatalogTcx
 
 			return count;
 		}
+
+
+		private static int ScanGarmin (string path)
+		{
+			int count = 0;
+			List<UsbDisk> disks = null;
+
+			try
+			{
+				disks = new UsbFactory().GetAvailableDisks();
+			}
+			catch
+			{
+				// System.Management doesn't work in .NET Core
+				return count;
+			}
+
+			if ((disks != null) && (disks.Count > 0))
+			{
+				var disk = disks.FirstOrDefault(
+					e => e.Model.StartsWith("Garmin", StringComparison.InvariantCulture));
+
+				if (disk != null)
+				{
+					// scan for tcx files on the Garmin, disk.Name would be simply like "G:"
+
+					// Edge 820 stores fit files in Garmin\Activities
+					var sourcePath = disk.Name + @"\Garmin\Activities";
+					if (!Directory.Exists(sourcePath))
+					{
+						// Edge 705 stores tcx files in Garmin\History
+						sourcePath = disk.Name + @"\Garmin\History";
+					}
+
+					if (Directory.Exists(sourcePath))
+					{
+						Console.WriteLine();
+						Console.WriteLine("... scanning files in " + sourcePath);
+						count = ScanFiles(sourcePath, path, false);
+						Console.WriteLine("... found: " + count);
+					}
+				}
+			}
+			else
+			{
+				Console.WriteLine();
+				Console.WriteLine("... Garmin not found");
+			}
+
+			return count;
+		}
+
 
 		// gpsbabel -t -i garmin_fit 
 		//     -f C:/Users/steven/Documents/Zwift/Activities/2016-12-08-18-33-29.fit 
