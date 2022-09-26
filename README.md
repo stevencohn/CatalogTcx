@@ -47,11 +47,12 @@ Append /export_tcx to this to download its .tcx file:
 
 <h1>Bulk Download Strava Activities as TCX Files</h1>
 
-If you're tech-savvy (or just adventerous) then it is possible to download up to 20 activities at a time from the Strava activities page using the Google Chrome Web browser.
+If you're tech-savvy (or just adventerous) then it is possible to download up to 20 activities at a time from the Strava activities page using the
+Microsoft Edge or Google Chrome Web browser.
 
-First, you'll need to create a new code Snippet in Chrome. 
+First, you'll need to create a new code Snippet in your browser. 
 
-1. Open Chrome and press F12. This will display the developer tools pannel.
+1. Open your browser and press F12. This will display the developer tools pannel.
 2. Click the Sources tab
 3. Click the Snippets tab
 4. Click + New Snippet
