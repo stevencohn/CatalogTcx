@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>catalog_tcx</RootNamespace>
     <Authors>Steven M. Cohn</Authors>
     <Company>River Software</Company>
@@ -12,6 +12,9 @@
     <PackageIcon>Garmin.ico</PackageIcon>
     <PackageIconUrl />
     <ApplicationIcon>assets\Garmin.ico</ApplicationIcon>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <Version>$(AssemblyVersion)</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -132,7 +132,7 @@ namespace CatalogTcx
 		private static int ScanGarmin (string path)
 		{
 			int count = 0;
-			List<UsbDisk> disks = null;
+			IEnumerable<UsbDisk> disks = null;
 
 			try
 			{
@@ -144,7 +144,7 @@ namespace CatalogTcx
 				return count;
 			}
 
-			if ((disks != null) && (disks.Count > 0))
+			if ((disks != null) && (disks.Any()))
 			{
 				var disk = disks.FirstOrDefault(
 					e => e.Model.StartsWith("Garmin", StringComparison.InvariantCulture));
