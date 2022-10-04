@@ -58,7 +58,7 @@ First, you'll need to create a new code Snippet in your browser.
 4. Click + New Snippet
 5. Name the snippet "Strava activities downloader"
 6. Paste the following code into the source code panel and press Ctrl-S to save it
-```
+```javascript
 var links =  jQuery("a[data-field-name='name']");
 for (var i=0; i < links.length; i++) {
   if (links[i].href.indexOf('export_tcx') < 0) {
